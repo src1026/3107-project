@@ -1,5 +1,8 @@
+package datamanagement;
+
 import java.io.*;
 import java.util.*;
+import common.ParkingViolation;
 
 /**
  * Reads parking violations from CSV or JSON files.

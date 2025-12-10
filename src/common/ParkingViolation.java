@@ -1,3 +1,5 @@
+package common;
+
 /**
  * Represents a parking violation with all its associated data.
  */
