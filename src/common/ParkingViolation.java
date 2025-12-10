@@ -5,32 +5,62 @@ package common;
  */
 public class ParkingViolation {
     // TODO: Add private fields for:
-    // - timestamp (String)
-    // - fine (double)
-    // - description (String)
-    // - vehicleId (String)
-    // - state (String)
-    // - violationId (String)
-    // - zipCode (String)
+    private String timestamp;
+    private double fine;
+    private String description;
+    private String vehicleId;
+    private String state;
+    private String violationId;
+    private String zipCode;
 
     // TODO: Add constructor with all parameters
-
-    // TODO: Add getter methods for all fields
-
-    /**
-     * Checks if this violation has a valid ZIP code.
-     */
-    public boolean hasValidZipCode() {
-        // TODO: Return true if zipCode is not null and not empty
-        return false;
+    public ParkingViolation(String timestamp, double fine, String description, 
+                           String vehicleId, String state, String violationId, String zipCode) {
+        this.timestamp = timestamp;
+        this.fine = fine;
+        this.description = description;
+        this.vehicleId = vehicleId;
+        this.state = state;
+        this.violationId = violationId;
+        this.zipCode = zipCode;
     }
 
-    /**
-     * Checks if this violation is from Pennsylvania.
-     */
+    // TODO: Add getter methods for all fields
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public double getFine() {
+        return fine;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getVehicleId() {
+        return vehicleId;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getViolationId() {
+        return violationId;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public boolean hasValidZipCode() {
+        // TODO: Return true if zipCode is not null and not empty
+        return zipCode != null && !zipCode.trim().isEmpty();
+    }
     public boolean isFromPA() {
         // TODO: Return true if state equals "PA"
-        return false;
+        return "PA".equals(state);
     }
 }
 
