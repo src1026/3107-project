@@ -80,21 +80,15 @@ public class DataProcessor {
         // TODO: count number of valid properties
         // TODO: calculate average and round to integer
         // TODO: return 0 if no valid properties found
-        double sum = 0;
-        int count = 0;
+        // Using Streams and Lambda expressions feature
+        OptionalDouble average = properties.stream()
+                .filter(property -> property != null 
+                        && zipCode.equals(property.getZipCode()) 
+                        && property.hasValidMarketValue()) 
+                .mapToDouble(Property::getMarketValue) 
+                .average();
 
-        for (Property property : properties) {
-            if (property != null && zipCode.equals(property.getZipCode()) && property.hasValidMarketValue()) {
-                sum += property.getMarketValue();
-                count++;
-            }
-        }
-
-        if (count == 0) {
-            return 0;
-        }
-
-        return (int) Math.round(sum / count);
+        return average.isPresent() ? (int) Math.round(average.getAsDouble()) : 0;
     }
 
     public int getAverageTotalLivableArea(String zipCode) {
@@ -154,6 +148,20 @@ public class DataProcessor {
         // TODO: format: "0.0000"
         DecimalFormat df = new DecimalFormat("0.0000");
         return df.format(value);
+    }
+
+    // Using varargs feature
+    public Map<String, Integer> getAverageMarketValuesForZipCodes(String... zipCodes) {
+        Map<String, Integer> results = new HashMap<>();
+        for (String zipCode : zipCodes) {
+            if (zipCode != null) {
+                // Normalize ZIP code to first 5 digits
+                String normalizedZip = zipCode.length() >= 5 ? zipCode.substring(0, 5) : zipCode;
+                int average = getAverageMarketValue(normalizedZip);
+                results.put(normalizedZip, average);
+            }
+        }
+        return results;
     }
 }
 

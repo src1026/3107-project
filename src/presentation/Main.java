@@ -163,17 +163,25 @@ public class Main {
         // TODO: extract first 5 digits if longer
         // TODO: get average market value from processor
         // TODO: display the result
-        System.out.print("Enter ZIP code: ");
-        String zipCode = scanner.nextLine().trim();
+        System.out.print("Enter ZIP codes separated by commas (e.g., 19103,19104): ");
+        String input = scanner.nextLine().trim();
         
-        // Extract first 5 digits if longer
-        if (zipCode.length() >= 5) {
-            zipCode = zipCode.substring(0, 5);
+        // Split by comma to support multiple ZIP codes
+        String[] zipCodeArray = input.split(",");
+        for (int i = 0; i < zipCodeArray.length; i++) {
+            zipCodeArray[i] = zipCodeArray[i].trim();
+            // Extract first 5 digits if longer
+            if (zipCodeArray[i].length() >= 5) {
+                zipCodeArray[i] = zipCodeArray[i].substring(0, 5);
+            }
         }
         
         try {
-            int average = processor.getAverageMarketValue(zipCode);
-            System.out.println("\nAverage residential market value: " + average);
+            Map<String, Integer> results = processor.getAverageMarketValuesForZipCodes(zipCodeArray);
+            System.out.println();
+            for (Map.Entry<String, Integer> entry : results.entrySet()) {
+                System.out.println("ZIP " + entry.getKey() + ": Average residential market value: " + entry.getValue());
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("\nError: " + e.getMessage());
         }
