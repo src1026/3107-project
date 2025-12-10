@@ -2,7 +2,6 @@
 
 This Java application processes and analyzes data from OpenDataPhilly regarding parking violations and property values in Philadelphia.
 
-**Note: This is skeleton code with TODO comments. You need to implement all the methods marked with TODO.**
 
 ## Project Structure
 
@@ -24,21 +23,31 @@ src/
 
 ## Setup
 
-1. Download the JSON.simple library (json-simple-1.1.1.jar) and add it to your project's classpath.
+1. The JSON.simple library (json-simple-1.1.1.jar) is already included in the `lib/` directory.
 
 2. Compile the Java files:
    ```bash
-   javac -cp ".:json-simple-1.1.1.jar" src/*.java
+   mkdir -p bin
+   javac -d bin -sourcepath src -cp ".:lib/json-simple-1.1.1.jar" \
+     src/common/*.java \
+     src/datamanagement/*.java \
+     src/processor/*.java \
+     src/presentation/*.java
    ```
 
 3. Run the program:
    ```bash
-   java -cp ".:json-simple-1.1.1.jar:src" Main <format> <parking_file> <properties_file> <population_file>
+   java -cp ".:bin:lib/json-simple-1.1.1.jar" presentation.Main <format> <parking_file> <properties_file> <population_file>
    ```
 
    Example:
    ```bash
-   java -cp ".:json-simple-1.1.1.jar:src" Main csv parking.csv properties.csv population.txt
+   java -cp ".:bin:lib/json-simple-1.1.1.jar" presentation.Main csv data/parking.csv data/properties.csv data/population.txt
+   ```
+   
+   Or with JSON format:
+   ```bash
+   java -cp ".:bin:lib/json-simple-1.1.1.jar" presentation.Main json data/parking.json data/properties.csv data/population.txt
    ```
 
 ## Command-Line Arguments
