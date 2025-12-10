@@ -3,6 +3,10 @@ package datamanagement;
 import java.io.*;
 import java.util.*;
 import common.ParkingViolation;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Reads parking violations from CSV or JSON files.
@@ -77,7 +81,7 @@ public class ParkingViolationReader {
 
     /**
      * Reads parking violations from a JSON file.
-     * Uses simple string parsing to extract field values.
+     * Uses JSON.simple library to parse the file.
      */
     public static List<ParkingViolation> readFromJSON(String filename) throws IOException {
         // TODO: Use JSONParser to parse the JSON file
@@ -88,161 +92,87 @@ public class ParkingViolationReader {
         // TODO: Handle invalid entries gracefully (skip them)
         List<ParkingViolation> violations = new ArrayList<>();
         
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            StringBuilder jsonContent = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonContent.append(line);
-            }
+        try {
+            JSONParser parser = new JSONParser();
+            FileReader fileReader = new FileReader(filename);
+            Object obj = parser.parse(fileReader);
+            fileReader.close();
             
-            String json = jsonContent.toString();
-            
-            // Find all JSON objects in the array
-            int startIndex = 0;
-            while ((startIndex = json.indexOf("{", startIndex)) != -1) {
-                int endIndex = findMatchingBrace(json, startIndex);
-                if (endIndex == -1) break;
+            // The JSON file should contain an array of objects
+            if (obj instanceof JSONArray) {
+                JSONArray jsonArray = (JSONArray) obj;
                 
-                try {
-                    String objStr = json.substring(startIndex, endIndex + 1);
-                    
-                    // Extract field values
-                    String timestamp = extractJSONValue(objStr, "timestamp");
-                    String fineStr = extractJSONValue(objStr, "fine");
-                    String description = extractJSONValue(objStr, "description");
-                    String vehicleId = extractJSONValue(objStr, "vehicle_id");
-                    String state = extractJSONValue(objStr, "state");
-                    String violationId = extractJSONValue(objStr, "violation_id");
-                    String zipCode = extractJSONValue(objStr, "zip_code");
-                    
-                    // Parse fine
-                    double fine;
+                for (Object item : jsonArray) {
                     try {
-                        fine = Double.parseDouble(fineStr);
-                    } catch (NumberFormatException e) {
-                        startIndex = endIndex + 1;
-                        continue; // Skip invalid fine values
-                    }
-                    
-                    // Extract first 5 digits of ZIP code, or set to null if empty
-                    String normalizedZipCode = null;
-                    if (zipCode != null && !zipCode.isEmpty()) {
-                        if (zipCode.length() >= 5) {
-                            normalizedZipCode = zipCode.substring(0, 5);
-                        } else {
-                            normalizedZipCode = zipCode;
+                        if (item instanceof JSONObject) {
+                            JSONObject jsonObject = (JSONObject) item;
+                            
+                            // Extract fields from JSON object
+                            String timestamp = getStringValue(jsonObject, "timestamp");
+                            double fine = getDoubleValue(jsonObject, "fine");
+                            String description = getStringValue(jsonObject, "description");
+                            String vehicleId = getStringValue(jsonObject, "vehicle_id");
+                            String state = getStringValue(jsonObject, "state");
+                            String violationId = getStringValue(jsonObject, "violation_id");
+                            String zipCode = getStringValue(jsonObject, "zip_code");
+                            
+                            // Extract first 5 digits of ZIP code, or set to null if empty
+                            String normalizedZipCode = null;
+                            if (zipCode != null && !zipCode.isEmpty()) {
+                                if (zipCode.length() >= 5) {
+                                    normalizedZipCode = zipCode.substring(0, 5);
+                                } else {
+                                    normalizedZipCode = zipCode;
+                                }
+                            }
+                            
+                            // Create ParkingViolation object
+                            ParkingViolation violation = new ParkingViolation(
+                                timestamp, fine, description, vehicleId, state, violationId, normalizedZipCode
+                            );
+                            violations.add(violation);
                         }
+                    } catch (Exception e) {
+                        // Skip invalid entries gracefully
+                        continue;
                     }
-                    
-                    // Create ParkingViolation object
-                    ParkingViolation violation = new ParkingViolation(
-                        timestamp, fine, description, vehicleId, state, violationId, normalizedZipCode
-                    );
-                    violations.add(violation);
-                } catch (Exception e) {
-                    // Skip invalid entries gracefully
                 }
-                
-                startIndex = endIndex + 1;
             }
+        } catch (ParseException e) {
+            throw new IOException("Error parsing JSON file: " + e.getMessage(), e);
         }
         
         return violations;
     }
 
     /**
-     * Finds the matching closing brace for an opening brace.
+     * Helper method to get a string value from a JSON object.
      */
-    private static int findMatchingBrace(String str, int start) {
-        int depth = 0;
-        boolean inString = false;
-        boolean escaped = false;
-        
-        for (int i = start; i < str.length(); i++) {
-            char c = str.charAt(i);
-            
-            if (escaped) {
-                escaped = false;
-                continue;
-            }
-            
-            if (c == '\\') {
-                escaped = true;
-                continue;
-            }
-            
-            if (c == '"') {
-                inString = !inString;
-                continue;
-            }
-            
-            if (inString) {
-                continue;
-            }
-            
-            if (c == '{') {
-                depth++;
-            } else if (c == '}') {
-                depth--;
-                if (depth == 0) {
-                    return i;
-                }
-            }
-        }
-        
-        return -1;
-    }
-
-    /**
-     * Extracts a value from a JSON object string for a given key.
-     */
-    private static String extractJSONValue(String jsonObj, String key) {
-        String pattern = "\"" + key + "\"\\s*:\\s*";
-        int keyIndex = jsonObj.indexOf(pattern);
-        if (keyIndex == -1) {
+    private static String getStringValue(JSONObject obj, String key) {
+        Object value = obj.get(key);
+        if (value == null) {
             return "";
         }
-        
-        int valueStart = keyIndex + pattern.length();
-        
-        // Check if value is a quoted string
-        if (valueStart < jsonObj.length() && jsonObj.charAt(valueStart) == '"') {
-            int quoteStart = valueStart + 1;
-            int quoteEnd = quoteStart;
-            while (quoteEnd < jsonObj.length()) {
-                if (jsonObj.charAt(quoteEnd) == '"' && (quoteEnd == quoteStart || jsonObj.charAt(quoteEnd - 1) != '\\')) {
-                    break;
-                }
-                quoteEnd++;
-            }
-            if (quoteEnd < jsonObj.length()) {
-                return unescapeJSONString(jsonObj.substring(quoteStart, quoteEnd));
-            }
-        } else {
-            // Value is a number - find the end (comma or closing brace)
-            int valueEnd = valueStart;
-            while (valueEnd < jsonObj.length()) {
-                char c = jsonObj.charAt(valueEnd);
-                if (c == ',' || c == '}') {
-                    break;
-                }
-                valueEnd++;
-            }
-            return jsonObj.substring(valueStart, valueEnd).trim();
-        }
-        
-        return "";
+        return value.toString();
     }
 
     /**
-     * Unescapes JSON string values.
+     * Helper method to get a double value from a JSON object.
      */
-    private static String unescapeJSONString(String str) {
-        return str.replace("\\\"", "\"")
-                  .replace("\\\\", "\\")
-                  .replace("\\n", "\n")
-                  .replace("\\r", "\r")
-                  .replace("\\t", "\t");
+    private static double getDoubleValue(JSONObject obj, String key) {
+        Object value = obj.get(key);
+        if (value == null) {
+            return 0.0;
+        }
+        try {
+            if (value instanceof Number) {
+                return ((Number) value).doubleValue();
+            } else {
+                return Double.parseDouble(value.toString());
+            }
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
     }
 
     /**
