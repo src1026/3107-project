@@ -53,7 +53,7 @@ public class Main {
             List<Property> properties = PropertyReader.readFromCSV(propertiesFile);
             Map<String, Integer> population = PopulationReader.readFromFile(populationFile);
 
-            processor = new DataProcessor(violations, properties, population);
+            processor = DataProcessor.getInstance(violations, properties, population);
             scanner = new Scanner(System.in);
 
             showMainMenu();

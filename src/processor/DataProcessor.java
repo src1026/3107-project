@@ -6,16 +6,19 @@ import common.ParkingViolation;
 import common.Property;
 
 public class DataProcessor {
+    // Singleton instance
+    private static DataProcessor instance;
+
     // TODO: add private fields for:
-    // - violations (List<ParkingViolation>)
+    // - violations (ViolationList)
     // - properties (List<Property>)
     // - population (Map<String, Integer>)
-    private List<ParkingViolation> violations;
+    private ViolationList violations;
     private List<Property> properties;
     private Map<String, Integer> population;
 
-    // TODO: Add constructor to initialize all fields
-    public DataProcessor(List<ParkingViolation> violations, 
+    // Private constructor for Singleton pattern
+    private DataProcessor(List<ParkingViolation> violations, 
                         List<Property> properties, 
                         Map<String, Integer> population) {
         if (violations == null) {
@@ -28,9 +31,35 @@ public class DataProcessor {
             throw new IllegalArgumentException("Population map cannot be null");
         }
         
-        this.violations = violations;
+        this.violations = new ViolationList(violations);
         this.properties = properties;
         this.population = population;
+    }
+
+    /**
+     * Gets the singleton instance of DataProcessor.
+     * Creates the instance on first call with the provided parameters.
+     * @param violations the list of parking violations
+     * @param properties the list of properties
+     * @param population the population map
+     * @return the singleton DataProcessor instance
+     */
+    public static DataProcessor getInstance(List<ParkingViolation> violations, 
+                                           List<Property> properties, 
+                                           Map<String, Integer> population) {
+        if (instance == null) {
+            instance = new DataProcessor(violations, properties, population);
+        }
+        return instance;
+    }
+
+    /**
+     * Gets the singleton instance of DataProcessor.
+     * Returns null if instance has not been initialized.
+     * @return the singleton DataProcessor instance, or null if not initialized
+     */
+    public static DataProcessor getInstance() {
+        return instance;
     }
 
     public int getTotalPopulation() {
@@ -47,7 +76,9 @@ public class DataProcessor {
         Map<String, Double> totalFines = new HashMap<>();
 
         // TODO: calculate total fines per ZIP code (only PA violations with valid ZIP)
-        for (ParkingViolation violation : violations) {
+        violations.reset();
+        while (violations.hasNext()) {
+            ParkingViolation violation = violations.next();
             if (violation != null && violation.hasValidZipCode() && violation.isFromPA()) {
                 String zipCode = violation.getZipCode();
                 totalFines.put(zipCode, totalFines.getOrDefault(zipCode, 0.0) + violation.getFine());
@@ -164,4 +195,5 @@ public class DataProcessor {
         return results;
     }
 }
+
 
