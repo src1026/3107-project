@@ -36,7 +36,9 @@ This diagram shows a layered Java application organized into four packages: **co
 
 ## Setup
 
-1. The JSON.simple library (json-simple-1.1.1.jar) is already included in the `lib/` directory.
+0. The JSON.simple library `json-simple-1.1.1.jar` is already included in the **lib/** directory.
+
+1. Create a folder named **data/** in root directory. Download sample data input [files](https://drive.google.com/file/d/1ABs-3Am8sCqFPHttnc-n8qKFIsCMFf4p/view?usp=sharing) and save them in **data/**.
 
 2. Compile the Java files:
    ```bash
