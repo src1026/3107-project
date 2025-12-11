@@ -4,6 +4,7 @@ import java.util.*;
 import java.text.DecimalFormat;
 import common.ParkingViolation;
 import common.Property;
+import java.util.function.Function;
 
 public class DataProcessor {
     // Singleton instance
@@ -182,13 +183,13 @@ public class DataProcessor {
     }
 
     // Helper: handles multiple ZIP codes input
-    public Map<String, Integer> processZipCodes(java.util.function.Function<String, Integer> calculator,
+    public Map<String, Integer> processZipCodes(Function<String, Integer> calculator,
                                                  String... zipCodes) { // Java Features: Generics and Varargs 
         // Preserves insertion order of inputs
         Map<String, Integer> results = new LinkedHashMap<>();
         for (String zipCode : zipCodes) {
             if (zipCode != null) {
-                // Formats ZIP code to first 5 digits
+                // Normalizes ZIP code to first 5 digits
                 String normalizedZip = zipCode.length() >= 5 ? zipCode.substring(0, 5) : zipCode;
                 int result = calculator.apply(normalizedZip);
                 results.put(normalizedZip, result);
