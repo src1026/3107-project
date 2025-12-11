@@ -40,7 +40,7 @@ src/
    java -cp ".:bin:lib/json-simple-1.1.1.jar" presentation.Main <format> <parking_file> <properties_file> <population_file>
    ```
 
-   Example:
+   CSV Example:
    ```bash
    java -cp ".:bin:lib/json-simple-1.1.1.jar" presentation.Main csv data/parking.csv data/properties.csv data/population.txt
    ```
@@ -68,6 +68,155 @@ The application provides a menu-driven interface with the following options:
 4. **Average residential total livable area** - Calculates average square footage for a specified ZIP code
 5. **Residential market value per capita** - Calculates total property value divided by population for a ZIP code
 0. **Exit** - Terminates the program
+
+## Program Usage
+
+After starting the program with valid arguments, you will see the main menu. The program uses a menu-driven interface where you select options by entering numbers.
+
+### Main Menu
+
+The main menu displays the following options:
+
+```
+Main Menu:
+1. Total population for all ZIP codes
+2. Fines per capita for each ZIP code
+3. Average residential market value for a ZIP code
+4. Average residential total livable area for a ZIP code
+5. Residential market value per capita for a ZIP code
+0. Exit
+Enter your choice:
+```
+
+**Input**: Enter a number (0-5) corresponding to your desired option.
+
+**Output**: The menu will be displayed again after each operation completes.
+
+### Menu Option 1: Total Population for All ZIP Codes
+
+**Input**: Enter `1` when prompted at the main menu.
+
+**Expected Output**: 
+```
+Total population for all ZIP codes: 1526206
+```
+
+![Menu Option 1 Screenshot](docs/screenshots/option1.png)
+
+### Menu Option 2: Fines Per Capita for Each ZIP Code
+
+**Input**: Enter `2` when prompted at the main menu.
+
+**Expected Output**: 
+```
+19103 0.0284
+19104 0.0312
+...
+```
+
+The output displays:
+- One ZIP code per line
+- ZIP code in ascending numerical order
+- Fines per capita formatted to 4 decimal places
+- Only ZIP codes with non-zero fines and population 
+
+![Menu Option 2 Screenshot](docs/screenshots/option2.png)
+
+**_Notes for Option 3-5_**: 
+- The program accepts multiple ZIP codes separated by commas
+- ZIP codes are automatically normalized to their first 5 digits
+- If a ZIP code has no residences, the value displayed will be 0
+- Invalid market values (missing, non-numeric, negative, or zero) are ignored
+
+### Menu Option 3: Average Residential Market Value
+
+**Input**: 
+1. Enter `3` when prompted at the main menu.
+2. When prompted "Enter ZIP codes separated by commas (e.g., 19103,19104):", enter one or more ZIP codes separated by commas.
+
+**Example Input**: `19103` or multiple codes like `19103,19104`
+
+**Expected Output** (single ZIP code):
+```
+ZIP 19103: Average residential market value: 2015974
+```
+
+![Menu Option 3 Single Screenshot](docs/screenshots/option3-single.png)
+
+**Expected Output** (multiple ZIP codes):
+```
+ZIP 19103: Average residential market value: 2015974
+ZIP 19104: Average residential market value: 922763
+
+```
+
+![Menu Option 3 Multiple Screenshot](docs/screenshots/option3-multiple.png)
+
+### Menu Option 4: Average Residential Total Livable Area
+
+**Input**: 
+1. Enter `4` when prompted at the main menu.
+2. When prompted "Enter ZIP codes separated by commas (e.g., 19103,19104):", enter one or more ZIP codes separated by commas.
+
+**Example Input**: `19103` or multiple codes like `19103,19104`
+
+**Expected Output** (single ZIP code):
+```
+ZIP 19103: Average residential total livable area: 7837
+```
+
+![Menu Option 4 Single Screenshot](docs/screenshots/option4-single.png)
+
+**Expected Output** (multiple ZIP codes):
+```
+ZIP 19103: Average residential total livable area: 7837
+ZIP 19104: Average residential total livable area: 6361
+```
+
+![Menu Option 4 Multiple Screenshot](docs/screenshots/option4-multiple.png)
+
+
+### Menu Option 5: Residential Market Value Per Capita
+
+**Input**: 
+1. Enter `5` when prompted at the main menu.
+2. When prompted "Enter ZIP codes separated by commas (e.g., 19103,19104):", enter one or more ZIP codes separated by commas.
+
+**Example Input**: `19103` or multiple codes like `19103,19104`
+
+**Expected Output** (single ZIP code):
+```
+ZIP 19103: Residential market value per capita: 717020
+```
+
+![Menu Option 5 Single Screenshot](docs/screenshots/option5-single.png)
+
+**Expected Output** (multiple ZIP codes):
+```
+ZIP 19103: Residential market value per capita: 717020
+ZIP 19104: Residential market value per capita: 209994
+```
+
+![Menu Option 5 Multiple Screenshot](docs/screenshots/option5-multiple.png)
+
+### Menu Option 0: Exit
+
+**Input**: Enter `0` when prompted at the main menu.
+
+**Expected Output**: 
+```
+Exiting program. Goodbye!
+```
+
+![Menu Option 0 Screenshot](docs/screenshots/option0.png)
+
+The program will then terminate.
+
+### Invalid Input Handling
+
+- If you enter a non-integer value at the main menu, the menu will be displayed again
+- If you enter an invalid menu option (not 0-5), the menu will be displayed again
+- Invalid ZIP code inputs will result in a value of 0 being displayed (for options 3, 4, and 5)
 
 ## Data Validation
 
