@@ -144,90 +144,62 @@ public class Main {
         System.out.println("\nTotal population for all ZIP codes: " + total);
     }
 
+    /**
+     * Menu Option #2: Handle fines per capita for each ZIP code.
+     */
     private static void handleFinesPerCapita() {
-        // menu option 2
-        // TODO: get fines per capita map from processor
-        // TODO: display each ZIP code and its fines per capita (formatted to 4 decimals)
-        // TODO: format: "ZIP_CODE fines_per_capita" (e.g., "19103 0.0284")
         Map<String, Double> finesPerCapita = processor.getFinesPerCapita();
-        
         System.out.println();
         for (Map.Entry<String, Double> entry : finesPerCapita.entrySet()) {
             System.out.println(entry.getKey() + " " + DataProcessor.formatFourDecimals(entry.getValue()));
         }
     }
 
-    private static void handleAverageMarketValue() {
-        // menu option 3
-        // TODO: prompt user for ZIP code
-        // TODO: extract first 5 digits if longer
-        // TODO: get average market value from processor
-        // TODO: display the result
+    /**
+     * Helper for menu options 3-5: Display results for multiple ZIP codes.
+     */
+    private static void displayZipCodes(java.util.function.Function<String, Integer> calculator,
+                                       String resultLabel) {
         System.out.print("Enter ZIP codes separated by commas (e.g., 19103,19104): ");
         String input = scanner.nextLine().trim();
-        
-        // Split by comma to support multiple ZIP codes
         String[] zipCodeArray = input.split(",");
         for (int i = 0; i < zipCodeArray.length; i++) {
             zipCodeArray[i] = zipCodeArray[i].trim();
-            // Extract first 5 digits if longer
-            if (zipCodeArray[i].length() >= 5) {
-                zipCodeArray[i] = zipCodeArray[i].substring(0, 5);
-            }
         }
-        
         try {
-            Map<String, Integer> results = processor.getAverageMarketValuesForZipCodes(zipCodeArray);
+            // normalizes zip code formats
+            Map<String, Integer> results = processor.processZipCodes(calculator, zipCodeArray);
             System.out.println();
             for (Map.Entry<String, Integer> entry : results.entrySet()) {
-                System.out.println("ZIP " + entry.getKey() + ": Average residential market value: " + entry.getValue());
+                System.out.println("ZIP " + entry.getKey() + ": " + resultLabel + ": " + entry.getValue());
             }
         } catch (IllegalArgumentException e) {
             System.out.println("\nError: " + e.getMessage());
         }
     }
 
-    private static void handleAverageTotalLivableArea() {
-        // menu option 4
-        // TODO: prompt user for ZIP code
-        // TODO: extract first 5 digits if longer
-        // TODO: get average total livable area from processor
-        // TODO: display the result
-        System.out.print("Enter ZIP code: ");
-        String zipCode = scanner.nextLine().trim();
-        
-        // Extract first 5 digits if longer
-        if (zipCode.length() >= 5) {
-            zipCode = zipCode.substring(0, 5);
-        }
-        
-        try {
-            int average = processor.getAverageTotalLivableArea(zipCode);
-            System.out.println("\nAverage residential total livable area: " + average);
-        } catch (IllegalArgumentException e) {
-            System.out.println("\nError: " + e.getMessage());
-        }
+    /**
+     * Menu Option #3: Handle average market value for a ZIP code.
+     */
+    private static void handleAverageMarketValue() {
+        displayZipCodes(zipCode -> processor.getAverageMarketValue(zipCode), 
+                                  "Average residential market value");
     }
 
+    /**
+     * Menu Option #4: Handle average total livable area for a ZIP code.
+     */
+    private static void handleAverageTotalLivableArea() {
+        displayZipCodes(zipCode -> processor.getAverageTotalLivableArea(zipCode), 
+                                  "Average residential total livable area");
+    }
+
+    /**
+     * Menu Option #5: Handle market value per capita for a ZIP code.
+     */
     private static void handleMarketValuePerCapita() {
-        // TODO: prompt user for ZIP code
-        // TODO: extract first 5 digits if longer
-        // TODO: get market value per capita from processor
-        // TODO: display the result
-        System.out.print("Enter ZIP code: ");
-        String zipCode = scanner.nextLine().trim();
-        
-        // Extract first 5 digits if longer
-        if (zipCode.length() >= 5) {
-            zipCode = zipCode.substring(0, 5);
-        }
-        
-        try {
-            int perCapita = processor.getMarketValuePerCapita(zipCode);
-            System.out.println("\nResidential market value per capita: " + perCapita);
-        } catch (IllegalArgumentException e) {
-            System.out.println("\nError: " + e.getMessage());
-        }
+        displayZipCodes(zipCode -> processor.getMarketValuePerCapita(zipCode), 
+                                  "Residential market value per capita");
     }
 }
 
