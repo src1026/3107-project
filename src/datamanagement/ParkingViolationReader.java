@@ -8,23 +8,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/**
- * Reads parking violations from CSV or JSON files.
- */
+// Reads parking violations from CSV or JSON files
 public class ParkingViolationReader {
     
-    /**
-     * Reads parking violations from a CSV file.
-     * Each line contains 7 comma-separated fields:
-     * timestamp, fine, description, vehicle_id, state, violation_id, zip_code
-     */
+    // Reads parking violations from a CSV file
     public static List<ParkingViolation> readFromCSV(String filename) throws IOException {
-        // TODO: Read CSV file line by line
-        // TODO: Parse each line into 7 fields
-        // TODO: Extract first 5 digits of ZIP code (or set to null if empty)
-        // TODO: Create ParkingViolation objects and add to list
-        // TODO: Handle invalid lines gracefully (skip them)
+
         List<ParkingViolation> violations = new ArrayList<>();
+
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -36,7 +27,7 @@ public class ParkingViolationReader {
                         continue;
                     }
                     
-                    // Extract fields
+                    // Extract fields from CSV line
                     String timestamp = fields[0].trim();
                     String fineStr = fields[1].trim();
                     String description = fields[2].trim();
@@ -79,17 +70,9 @@ public class ParkingViolationReader {
         return violations;
     }
 
-    /**
-     * Reads parking violations from a JSON file.
-     * Uses JSON.simple library to parse the file.
-     */
+    // Reads parking violations from a JSON file
     public static List<ParkingViolation> readFromJSON(String filename) throws IOException {
-        // TODO: Use JSONParser to parse the JSON file
-        // TODO: Iterate through JSON array of objects
-        // TODO: Extract fields from each JSON object
-        // TODO: Extract first 5 digits of ZIP code (or set to null if empty)
-        // TODO: Create ParkingViolation objects and add to list
-        // TODO: Handle invalid entries gracefully (skip them)
+
         List<ParkingViolation> violations = new ArrayList<>();
         
         try {
@@ -145,9 +128,7 @@ public class ParkingViolationReader {
         return violations;
     }
 
-    /**
-     * Helper method to get a string value from a JSON object.
-     */
+    // Helper: Gets string value from JSON object
     private static String getStringValue(JSONObject obj, String key) {
         Object value = obj.get(key);
         if (value == null) {
@@ -156,9 +137,7 @@ public class ParkingViolationReader {
         return value.toString();
     }
 
-    /**
-     * Helper method to get a double value from a JSON object.
-     */
+    // Helper: Gets double value from JSON object
     private static double getDoubleValue(JSONObject obj, String key) {
         Object value = obj.get(key);
         if (value == null) {
@@ -175,12 +154,8 @@ public class ParkingViolationReader {
         }
     }
 
-    /**
-     * Parses a CSV line, handling quoted fields.
-     */
+    // Helper: Parses a CSV line, handling quoted fields
     private static String[] parseCSVLine(String line) {
-        // TODO: Parse CSV line, handling quoted fields that may contain commas
-        // TODO: Return array of field strings
         if (line == null || line.trim().isEmpty()) {
             return new String[0];
         }

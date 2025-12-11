@@ -4,7 +4,6 @@ package common;
  * Represents a parking violation with all its associated data.
  */
 public class ParkingViolation {
-    // TODO: Add private fields for:
     private String timestamp;
     private double fine;
     private String description;
@@ -13,7 +12,7 @@ public class ParkingViolation {
     private String violationId;
     private String zipCode;
 
-    // TODO: Add constructor with all parameters
+    // Constructor
     public ParkingViolation(String timestamp, double fine, String description, 
                            String vehicleId, String state, String violationId, String zipCode) {
         this.timestamp = timestamp;
@@ -25,7 +24,7 @@ public class ParkingViolation {
         this.zipCode = zipCode;
     }
 
-    // TODO: Add getter methods for all fields
+    // Getters
     public String getTimestamp() {
         return timestamp;
     }
@@ -54,12 +53,13 @@ public class ParkingViolation {
         return zipCode;
     }
 
+    // Checks if zipCode is not null and not empty
     public boolean hasValidZipCode() {
-        // TODO: Return true if zipCode is not null and not empty
         return zipCode != null && !zipCode.trim().isEmpty();
     }
+
+    // Checks if violation is from Pennsylvania
     public boolean isFromPA() {
-        // TODO: Return true if state equals "PA"
         return "PA".equals(state);
     }
 }
