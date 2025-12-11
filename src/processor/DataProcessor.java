@@ -7,13 +7,7 @@ import common.ParkingViolation;
 import common.Property;
 
 public class DataProcessor {
-    // Singleton instance
-    private static DataProcessor instance;
-
-    // TODO: add private fields for:
-    // - violations (ViolationList)
-    // - properties (List<Property>)
-    // - population (Map<String, Integer>)
+    private static DataProcessor instance; // singleton
     private ViolationList violations;
     private List<Property> properties;
     private Map<String, Integer> population;
@@ -22,7 +16,7 @@ public class DataProcessor {
 
     private Map<String, Integer> averageTotalLivableAreaCache;
 
-    // Private constructor for Singleton pattern
+    // private constructor for singleton pattern
     private DataProcessor(List<ParkingViolation> violations, 
                         List<Property> properties, 
                         Map<String, Integer> population) {
@@ -43,14 +37,8 @@ public class DataProcessor {
         this.averageTotalLivableAreaCache = new HashMap<>();
     }
 
-    /**
-     * Gets the singleton instance of DataProcessor.
-     * Creates the instance on first call with the provided parameters.
-     * @param violations the list of parking violations
-     * @param properties the list of properties
-     * @param population the population map
-     * @return the singleton DataProcessor instance
-     */
+    //Gets the singleton instance of DataProcessor.
+    // Creates the instance on first call with the provided parameters.
     public static DataProcessor getInstance(List<ParkingViolation> violations, 
                                            List<Property> properties, 
                                            Map<String, Integer> population) {
@@ -60,20 +48,14 @@ public class DataProcessor {
         return instance;
     }
 
-    /**
-     * Gets the singleton instance of DataProcessor.
-     * Returns null if instance has not been initialized.
-     * @return the singleton DataProcessor instance, or null if not initialized
-     */
     public static DataProcessor getInstance() {
         return instance;
     }
 
-    /**
-     * Resets the singleton instance to null.
-     * This method is primarily for testing purposes to allow creating new instances.
-     * Also clears all memoization caches.
-     */
+    // resets the singleton instance to null.
+    // this method is primarily for testing purposes to allow creating new instances.
+    // Also clears all memoization caches.
+
     public static void resetInstance() {
         if (instance != null) {
             instance.averageMarketValueCache.clear();
@@ -83,7 +65,6 @@ public class DataProcessor {
     }
 
     public int getTotalPopulation() {
-        // TODO: Sum all population values from the map
         int total = 0;
         for (int pop : population.values()) {
             total += pop;
@@ -95,7 +76,7 @@ public class DataProcessor {
         Map<String, Double> finesPerCapita = new TreeMap<>();
         Map<String, Double> totalFines = new HashMap<>();
 
-        // TODO: calculate total fines per ZIP code (only PA violations with valid ZIP)
+        // calculate total fines per ZIP code (only PA violations with valid ZIP)
         violations.reset();
         while (violations.hasNext()) {
             ParkingViolation violation = violations.next();
@@ -105,9 +86,9 @@ public class DataProcessor {
             }
         }
 
-        // TODO: for each ZIP code, calculate fines per capita = total fines / population
-        // TODO: only include ZIP codes with non-zero fines and population
-        // TODO: return TreeMap for sorted output
+        // for each ZIP code, calculate fines per capita = total fines / population
+        // only include ZIP codes with non-zero fines and population
+        // return TreeMap for sorted output
         for (Map.Entry<String, Double> entry : totalFines.entrySet()) {
             String zipCode = entry.getKey();
             double totalFine = entry.getValue();
@@ -122,20 +103,12 @@ public class DataProcessor {
         return finesPerCapita;
     }
 
-    /**
-     * Calculates the average market value for properties in a given ZIP code.
-     * Uses memoization to cache results and avoid redundant calculations for the same ZIP code.
-     * 
-     * @param zipCode the ZIP code to calculate average market value for
-     * @return the average market value as an integer, or 0 if no valid properties found
-     * @throws IllegalArgumentException if zipCode is null
-     */
     public int getAverageMarketValue(String zipCode) {
         if (zipCode == null) {
             throw new IllegalArgumentException("ZIP code cannot be null");
         }
         
-        // Memoization: Check cache first - return cached result if available
+        // memoization: check cache first - return cached result if available
         if (averageMarketValueCache.containsKey(zipCode)) {
             return averageMarketValueCache.get(zipCode);
         }
@@ -151,31 +124,23 @@ public class DataProcessor {
 
         int result = average.isPresent() ? (int) Math.round(average.getAsDouble()) : 0;
         
-        // Memoization: Store computed result in cache for future use
+        // memoization: store computed result in cache for future use
         averageMarketValueCache.put(zipCode, result);
         
         return result;
     }
 
-    /**
-     * Calculates the average total livable area for properties in a given ZIP code.
-     * Uses memoization to cache results and avoid redundant calculations for the same ZIP code.
-     * 
-     * @param zipCode the ZIP code to calculate average total livable area for
-     * @return the average total livable area as an integer, or 0 if no valid properties found
-     * @throws IllegalArgumentException if zipCode is null
-     */
     public int getAverageTotalLivableArea(String zipCode) {
         if (zipCode == null) {
             throw new IllegalArgumentException("ZIP code cannot be null");
         }
         
-        // Memoization: Check cache first - return cached result if available
+        // memoization: check cache first - return cached result if available
         if (averageTotalLivableAreaCache.containsKey(zipCode)) {
             return averageTotalLivableAreaCache.get(zipCode);
         }
         
-        // Calculate average total livable area for properties in the ZIP code (only valid values)
+        // calculate average total livable area for properties in the ZIP code (only valid values)
         double sum = 0;
         int count = 0;
 
@@ -197,7 +162,7 @@ public class DataProcessor {
             throw new IllegalArgumentException("ZIP code cannot be null");
         }
         
-        // TODO: sum total market value for all properties in ZIP code (only valid values)
+        // sum total market value for all properties in ZIP code (only valid values)
         double totalMarketValue = 0;
 
         for (Property property : properties) {
@@ -206,10 +171,10 @@ public class DataProcessor {
             }
         }
 
-        // TODO: get population for ZIP code
-        // TODO: calculate per capita = total market value / population
-        // TODO: round to integer
-        // TODO: return 0 if no valid properties or ZIP code not in population data
+        // get population for ZIP code
+        // calculate per capita = total market value / population
+        // round to integer
+        // return 0 if no valid properties or ZIP code not in population data
         Integer pop = population.get(zipCode);
         if (pop == null || pop == 0 || totalMarketValue == 0) {
             return 0;
@@ -219,20 +184,20 @@ public class DataProcessor {
     }
 
     public static String formatFourDecimals(double value) {
-        // TODO: use DecimalFormat to format to 4 decimal places with trailing zeros
-        // TODO: format: "0.0000"
+        // use DecimalFormat to format to 4 decimal places with trailing zeros
+        // format: "0.0000"
         DecimalFormat df = new DecimalFormat("0.0000");
         return df.format(value);
     }
 
-    // Helper: handles multiple ZIP codes input
+    // helper: handles multiple ZIP codes input
     public Map<String, Integer> processZipCodes(Function<String, Integer> calculator,
                                                  String... zipCodes) { // Java Features: Generics and Varargs 
-        // Preserves insertion order of inputs
+        // preserves insertion order of inputs
         Map<String, Integer> results = new LinkedHashMap<>();
         for (String zipCode : zipCodes) {
             if (zipCode != null) {
-                // Normalizes ZIP code to first 5 digits
+                // normalizes ZIP code to first 5 digits
                 String normalizedZip = zipCode.length() >= 5 ? zipCode.substring(0, 5) : zipCode;
                 int result = calculator.apply(normalizedZip);
                 results.put(normalizedZip, result);

@@ -4,16 +4,7 @@ import java.io.*;
 import java.util.*;
 import common.Property;
 
-/**
- * Reads property data from a CSV file.
- */
 public class PropertyReader {
-    
-    /**
-     * Reads properties from a CSV file.
-     * The first row contains headers that indicate which columns contain
-     * market_value, total_livable_area, and zip_code.
-     */
     public static List<Property> readFromCSV(String filename) throws IOException {
         if (filename == null || filename.trim().isEmpty()) {
             throw new IllegalArgumentException("Filename cannot be null or empty");
@@ -22,10 +13,7 @@ public class PropertyReader {
         List<Property> properties = new ArrayList<>();
         
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            // TODO: Read header row to find column indices for:
-            //   - market_value
-            //   - total_livable_area
-            //   - zip_code
+            // read header row to find column indices for market_value, total_livable_area, and zip_code
             String headerLine = reader.readLine();
             if (headerLine == null) {
                 return properties;
@@ -36,7 +24,7 @@ public class PropertyReader {
             int totalLivableAreaIndex = -1;
             int zipCodeIndex = -1;
             
-            // Find indices of required columns
+            // find indices of required columns
             for (int i = 0; i < headers.length; i++) {
                 String header = headers[i].trim().toLowerCase();
                 if (header.equals("market_value")) {
@@ -52,28 +40,24 @@ public class PropertyReader {
                 throw new IOException("Required columns not found in CSV header");
             }
             
-            // TODO: Read data rows and extract values from appropriate columns
-            // TODO: Extract first 5 digits of ZIP code
-            // TODO: Parse market_value and total_livable_area (use parseDouble helper)
-            // TODO: Skip rows with empty ZIP codes
-            // TODO: Create Property objects and add to list
+            // read data rows and extract values from appropriate columns
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] fields = parseCSVLine(line);
                 
                 if (fields.length > Math.max(marketValueIndex, Math.max(totalLivableAreaIndex, zipCodeIndex))) {
                     String zipCode = fields[zipCodeIndex].trim();
-                    // Extract first 5 digits of ZIP code
+                    // extract first 5 digits of ZIP code
                     if (!zipCode.isEmpty() && zipCode.length() >= 5) {
                         zipCode = zipCode.substring(0, 5);
                     } else if (zipCode.isEmpty()) {
-                        continue; // Skip if no ZIP code
+                        // skip if no ZIP code
+                        continue;
                     }
                     
-                    // Parse market value
+                    // parse market value
                     Double marketValue = parseDouble(fields[marketValueIndex].trim());
-                    
-                    // Parse total livable area
+                    // parse total livable area
                     Double totalLivableArea = parseDouble(fields[totalLivableAreaIndex].trim());
                     
                     properties.add(new Property(zipCode, marketValue, totalLivableArea));
@@ -84,36 +68,29 @@ public class PropertyReader {
         return properties;
     }
 
-    /**
-     * Parses a string to a Double, returning null if invalid.
-     * Invalid values include: empty strings, non-numeric, negative, or zero.
-     */
     private static Double parseDouble(String value) {
-        // TODO: Return null if value is null or empty
+        // return null if value is null or empty
         if (value == null || value.trim().isEmpty()) {
             return null;
         }
         
-        // TODO: Try to parse as double
-        // TODO: Return the value if positive, otherwise return null
+        // try to parse as double
+        // return the value if positive, otherwise return null
         try {
             double d = Double.parseDouble(value.trim());
             if (d > 0) {
                 return d;
             }
         } catch (NumberFormatException e) {
-            // Not a valid number
+            // not a valid number
         }
         
         return null;
     }
 
-    /**
-     * Parses a CSV line, handling quoted fields.
-     */
     private static String[] parseCSVLine(String line) {
-        // TODO: Parse CSV line, handling quoted fields that may contain commas
-        // TODO: Return array of field strings
+        // parse CSV line, handling quoted fields that may contain commas
+        // return array of field strings
         if (line == null) {
             return new String[0];
         }
