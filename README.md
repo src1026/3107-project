@@ -7,14 +7,27 @@ This Java application processes and analyzes data from OpenDataPhilly regarding 
 
 ```
 src/
-├── Main.java                    # Main entry point with menu system
-├── ParkingViolation.java        # Data model for parking violations
-├── Property.java                # Data model for properties
-├── ParkingViolationReader.java  # Reads parking violations from CSV/JSON
-├── PropertyReader.java          # Reads property data from CSV
-├── PopulationReader.java        # Reads population data
-└── DataProcessor.java           # Performs calculations and data processing
+├── common/
+│   ├── ParkingViolation.java        # Data model for parking violations
+│   └── Property.java                # Data model for properties
+├── datamanagement/
+│   ├── ParkingViolationReader.java  # Reads parking violations from CSV/JSON
+│   ├── PropertyReader.java          # Reads property data from CSV
+│   └── PopulationReader.java        # Reads population data
+├── processor/
+│   ├── DataProcessor.java           # Performs calculations and data processing
+│   └── ViolationList.java            # Iterator implementation for violations
+└── presentation/
+    └── Main.java                     # Main entry point with menu system
 ```
+
+## UML Class Diagram
+
+The following UML class diagram shows the structure and relationships between all classes in the system:
+
+![UML Class Diagram](docs/uml.png)
+
+This diagram shows a layered Java application organized into four packages: **common**, **datamanagement**, **processor**, and **presentation**. The `common` package contains the domain model classes `ParkingViolation` and `Property`, which are simple data holders with validation methods. The `datamanagement` package provides reader classes (`ParkingViolationReader`, `PropertyReader`, and `PopulationReader`) responsible for loading raw data from CSV/JSON files and constructing the corresponding domain objects or population map. The `processor` package contains `ViolationList`, an **iterator** wrapper over a list of `ParkingViolation` objects, and `DataProcessor`, a **singleton** class that aggregates violations, properties, and population data and exposes all core computation methods (e.g., fines per capita, averages, etc.). `ViolationList` implements the `Iterator<ParkingViolation>` interface and is used internally by `DataProcessor` to traverse violations. Finally, the `presentation` package contains the `Main` class, which serves as the program’s entry point: it invokes the reader classes to load data, initializes the `DataProcessor` singleton, and drives the menu-based user interface that calls the appropriate processing methods.
 
 ## Requirements
 
