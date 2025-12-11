@@ -7,15 +7,11 @@ import processor.DataProcessor;
 import common.ParkingViolation;
 import common.Property;
 
-/**
- * Test class for DataProcessor.getAverageTotalLivableArea() method.
- * One test method per test case to achieve 100% statement coverage.
- */
 public class GetAverageTotalLivableAreaTest {
 
     @Test
     public void testGetAverageTotalLivableAreaWithValidProperties() {
-        // Test case: Single property with valid total livable area
+        //    Single property with valid total livable area
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));
@@ -31,7 +27,7 @@ public class GetAverageTotalLivableAreaTest {
 
     @Test
     public void testGetAverageTotalLivableAreaWithMultipleProperties() {
-        // Test case: Multiple properties, calculate average
+        //    Multiple properties, calculate average
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));
@@ -49,7 +45,7 @@ public class GetAverageTotalLivableAreaTest {
 
     @Test
     public void testGetAverageTotalLivableAreaWithNoProperties() {
-        // Test case: No properties for ZIP code
+        //    No properties for ZIP code
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19104", 100000.0, 1000.0));
@@ -65,7 +61,7 @@ public class GetAverageTotalLivableAreaTest {
 
     @Test
     public void testGetAverageTotalLivableAreaWithInvalidArea() {
-        // Test case: Properties with invalid total livable areas should be ignored
+        //    Properties with invalid total livable areas should be ignored
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, null));
@@ -84,7 +80,7 @@ public class GetAverageTotalLivableAreaTest {
 
     @Test
     public void testGetAverageTotalLivableAreaWithRoundedAverage() {
-        // Test case: Average that needs rounding
+        //    Average that needs rounding
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));
@@ -101,7 +97,7 @@ public class GetAverageTotalLivableAreaTest {
 
     @Test
     public void testGetAverageTotalLivableAreaWithNullProperty() {
-        // Test case: Null properties should be handled gracefully
+        //    Null properties should be handled gracefully
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(null);
@@ -118,7 +114,7 @@ public class GetAverageTotalLivableAreaTest {
 
     @Test
     public void testGetAverageTotalLivableAreaWithNullZipCode() {
-        // Test case: Null ZIP code should throw exception
+        //    Null ZIP code should throw exception
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         Map<String, Integer> population = new HashMap<>();
@@ -132,7 +128,7 @@ public class GetAverageTotalLivableAreaTest {
 
     @Test
     public void testGetAverageTotalLivableAreaWithMemoizationCache() {
-        // Test case: Second call to same ZIP code should return cached result
+        //    Second call to same ZIP code should return cached result
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));

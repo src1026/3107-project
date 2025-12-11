@@ -7,15 +7,11 @@ import processor.DataProcessor;
 import common.ParkingViolation;
 import common.Property;
 
-/**
- * Test class for DataProcessor.getTotalPopulation() method.
- * One test method per test case to achieve 100% statement coverage.
- */
 public class GetTotalPopulationTest {
 
     @Test
     public void testGetTotalPopulationWithSingleZipCode() {
-        // Test case: Single ZIP code with population
+        // Single ZIP code with population
         DataProcessor.resetInstance();
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
@@ -30,7 +26,7 @@ public class GetTotalPopulationTest {
 
     @Test
     public void testGetTotalPopulationWithMultipleZipCodes() {
-        // Test case: Multiple ZIP codes
+        // Multiple ZIP codes
         DataProcessor.resetInstance();
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
@@ -47,7 +43,7 @@ public class GetTotalPopulationTest {
 
     @Test
     public void testGetTotalPopulationWithEmptyMap() {
-        // Test case: Empty population map
+        // Empty population map
         DataProcessor.resetInstance();
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
@@ -61,7 +57,7 @@ public class GetTotalPopulationTest {
 
     @Test
     public void testGetTotalPopulationWithZeroPopulation() {
-        // Test case: ZIP code with zero population
+        // ZIP code with zero population
         DataProcessor.resetInstance();
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();

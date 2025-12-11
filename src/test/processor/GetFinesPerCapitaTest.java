@@ -15,7 +15,7 @@ public class GetFinesPerCapitaTest {
 
     @Test
     public void testGetFinesPerCapitaWithPAViolations() {
-        // Test case: PA violations with valid ZIP codes
+        // PA violations with valid ZIP codes
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createMockViolation("19103", "PA", 100.0, true);
         ParkingViolation v2 = createMockViolation("19103", "PA", 50.0, true);
@@ -36,7 +36,7 @@ public class GetFinesPerCapitaTest {
 
     @Test
     public void testGetFinesPerCapitaWithNonPAViolations() {
-        // Test case: Non-PA violations should be ignored
+        // Non-PA violations should be ignored
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createMockViolation("19103", "NJ", 100.0, true);
         violations.add(v1);
@@ -54,7 +54,7 @@ public class GetFinesPerCapitaTest {
 
     @Test
     public void testGetFinesPerCapitaWithInvalidZipCode() {
-        // Test case: Violations with invalid ZIP codes should be ignored
+        // Violations with invalid ZIP codes should be ignored
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createMockViolation("19103", "PA", 100.0, false);
         violations.add(v1);
@@ -72,7 +72,7 @@ public class GetFinesPerCapitaTest {
 
     @Test
     public void testGetFinesPerCapitaWithZeroPopulation() {
-        // Test case: ZIP code with zero population should be excluded
+        // ZIP code with zero population should be excluded
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createMockViolation("19103", "PA", 100.0, true);
         violations.add(v1);
@@ -90,7 +90,7 @@ public class GetFinesPerCapitaTest {
 
     @Test
     public void testGetFinesPerCapitaWithMissingPopulation() {
-        // Test case: ZIP code not in population map should be excluded
+        // ZIP code not in population map should be excluded
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createMockViolation("19103", "PA", 100.0, true);
         violations.add(v1);
@@ -108,7 +108,7 @@ public class GetFinesPerCapitaTest {
 
     @Test
     public void testGetFinesPerCapitaWithZeroFines() {
-        // Test case: ZIP code with zero fines should be excluded
+        // ZIP code with zero fines should be excluded
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createMockViolation("19103", "PA", 0.0, true);
         violations.add(v1);
@@ -126,7 +126,7 @@ public class GetFinesPerCapitaTest {
 
     @Test
     public void testGetFinesPerCapitaWithMultipleZipCodes() {
-        // Test case: Multiple ZIP codes, sorted output
+        // Multiple ZIP codes, sorted output
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createMockViolation("19104", "PA", 100.0, true);
         ParkingViolation v2 = createMockViolation("19103", "PA", 50.0, true);
@@ -151,7 +151,7 @@ public class GetFinesPerCapitaTest {
 
     @Test
     public void testGetFinesPerCapitaWithNullViolation() {
-        // Test case: Null violations should be handled gracefully
+        // Null violations should be handled gracefully
         List<ParkingViolation> violations = new ArrayList<>();
         violations.add(null);
         ParkingViolation v1 = createMockViolation("19103", "PA", 100.0, true);

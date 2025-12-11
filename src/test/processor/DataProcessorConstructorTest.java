@@ -7,15 +7,11 @@ import processor.DataProcessor;
 import common.ParkingViolation;
 import common.Property;
 
-/**
- * Test class for DataProcessor constructor.
- * One test method per test case to achieve 100% statement coverage.
- */
 public class DataProcessorConstructorTest {
 
     @Test
     public void testConstructorWithValidParameters() {
-        // Test case: Valid parameters should create instance
+        //  Valid parameters should create instance
         DataProcessor.resetInstance();
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
@@ -27,7 +23,7 @@ public class DataProcessorConstructorTest {
 
     @Test
     public void testConstructorWithNullViolations() {
-        // Test case: Null violations list should throw exception
+        //  Null violations list should throw exception
         DataProcessor.resetInstance();
         List<Property> properties = new ArrayList<>();
         Map<String, Integer> population = new HashMap<>();
@@ -39,7 +35,7 @@ public class DataProcessorConstructorTest {
 
     @Test
     public void testConstructorWithNullProperties() {
-        // Test case: Null properties list should throw exception
+        //  Null properties list should throw exception
         DataProcessor.resetInstance();
         List<ParkingViolation> violations = new ArrayList<>();
         Map<String, Integer> population = new HashMap<>();
@@ -51,7 +47,7 @@ public class DataProcessorConstructorTest {
 
     @Test
     public void testConstructorWithNullPopulation() {
-        // Test case: Null population map should throw exception
+        //  Null population map should throw exception
         DataProcessor.resetInstance();
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
@@ -63,7 +59,7 @@ public class DataProcessorConstructorTest {
 
     @Test
     public void testGetInstanceWhenInstanceAlreadyExists() {
-        // Test case: getInstance() should return existing instance when called again
+        //  getInstance() should return existing instance when called again
         // This tests the branch: if (instance == null) - false branch
         DataProcessor.resetInstance();
         List<ParkingViolation> violations1 = new ArrayList<>();

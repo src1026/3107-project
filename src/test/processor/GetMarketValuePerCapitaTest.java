@@ -7,10 +7,6 @@ import processor.DataProcessor;
 import common.ParkingViolation;
 import common.Property;
 
-/**
- * Test class for DataProcessor.getMarketValuePerCapita() method.
- * One test method per test case to achieve 100% statement coverage.
- */
 public class GetMarketValuePerCapitaTest {
 
     @Test

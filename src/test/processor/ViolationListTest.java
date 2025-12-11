@@ -6,15 +6,11 @@ import java.util.*;
 import processor.ViolationList;
 import common.ParkingViolation;
 
-/**
- * Test class for ViolationList class.
- * One test method per test case to achieve 100% statement coverage.
- */
 public class ViolationListTest {
 
     @Test
     public void testConstructorWithValidList() {
-        // Test case: Valid list should create instance
+        // Valid list should create instance
         List<ParkingViolation> violations = new ArrayList<>();
         violations.add(createViolation("19103"));
         violations.add(createViolation("19104"));
@@ -26,7 +22,7 @@ public class ViolationListTest {
 
     @Test
     public void testConstructorWithNullList() {
-        // Test case: Null list should throw exception
+        // Null list should throw exception
         assertThrows(IllegalArgumentException.class, () -> {
             new ViolationList(null);
         });
@@ -34,7 +30,7 @@ public class ViolationListTest {
 
     @Test
     public void testConstructorWithEmptyList() {
-        // Test case: Empty list should create instance
+        // Empty list should create instance
         List<ParkingViolation> violations = new ArrayList<>();
         ViolationList violationList = new ViolationList(violations);
         assertNotNull(violationList);
@@ -44,7 +40,7 @@ public class ViolationListTest {
 
     @Test
     public void testHasNextWithElements() {
-        // Test case: hasNext() should return true when elements exist
+        // hasNext() should return true when elements exist
         List<ParkingViolation> violations = new ArrayList<>();
         violations.add(createViolation("19103"));
         ViolationList violationList = new ViolationList(violations);
@@ -54,7 +50,7 @@ public class ViolationListTest {
 
     @Test
     public void testHasNextWithoutElements() {
-        // Test case: hasNext() should return false when no elements
+        // hasNext() should return false when no elements
         List<ParkingViolation> violations = new ArrayList<>();
         ViolationList violationList = new ViolationList(violations);
         
@@ -63,7 +59,7 @@ public class ViolationListTest {
 
     @Test
     public void testHasNextAfterIteration() {
-        // Test case: hasNext() should return false after iterating all elements
+        // hasNext() should return false after iterating all elements
         List<ParkingViolation> violations = new ArrayList<>();
         violations.add(createViolation("19103"));
         ViolationList violationList = new ViolationList(violations);
@@ -74,7 +70,7 @@ public class ViolationListTest {
 
     @Test
     public void testNextWithElements() {
-        // Test case: next() should return next element
+        // next() should return next element
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createViolation("19103");
         ParkingViolation v2 = createViolation("19104");
@@ -88,7 +84,7 @@ public class ViolationListTest {
 
     @Test
     public void testNextWithoutElements() {
-        // Test case: next() should throw exception when no more elements
+        // next() should throw exception when no more elements
         List<ParkingViolation> violations = new ArrayList<>();
         ViolationList violationList = new ViolationList(violations);
         
@@ -99,7 +95,7 @@ public class ViolationListTest {
 
     @Test
     public void testNextAfterIteration() {
-        // Test case: next() should throw exception after iterating all elements
+        // next() should throw exception after iterating all elements
         List<ParkingViolation> violations = new ArrayList<>();
         violations.add(createViolation("19103"));
         ViolationList violationList = new ViolationList(violations);
@@ -112,7 +108,7 @@ public class ViolationListTest {
 
     @Test
     public void testReset() {
-        // Test case: reset() should reset iterator to beginning
+        // reset() should reset iterator to beginning
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createViolation("19103");
         ParkingViolation v2 = createViolation("19104");
@@ -129,7 +125,7 @@ public class ViolationListTest {
 
     @Test
     public void testSize() {
-        // Test case: size() should return correct size
+        // size() should return correct size
         List<ParkingViolation> violations = new ArrayList<>();
         violations.add(createViolation("19103"));
         violations.add(createViolation("19104"));
@@ -141,7 +137,7 @@ public class ViolationListTest {
 
     @Test
     public void testMultipleIterationsWithReset() {
-        // Test case: Multiple iterations with reset should work correctly
+        // Multiple iterations with reset should work correctly
         List<ParkingViolation> violations = new ArrayList<>();
         ParkingViolation v1 = createViolation("19103");
         ParkingViolation v2 = createViolation("19104");

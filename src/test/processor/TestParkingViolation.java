@@ -2,14 +2,6 @@ package test.processor;
 
 import common.ParkingViolation;
 
-/**
- * Test helper class for creating ParkingViolation instances with specific behavior.
- * This is used for testing DataProcessor methods.
- * 
- * IMPORTANT: This class requires ParkingViolation to be fully implemented first.
- * Once ParkingViolation has a constructor that takes all parameters, update this class
- * to call super() with appropriate values.
- */
 public class TestParkingViolation extends ParkingViolation {
     private String zipCode;
     private String state;

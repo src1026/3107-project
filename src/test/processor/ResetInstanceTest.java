@@ -7,15 +7,11 @@ import processor.DataProcessor;
 import common.ParkingViolation;
 import common.Property;
 
-/**
- * Test class for DataProcessor.resetInstance() method.
- * One test method per test case to achieve 100% statement coverage.
- */
 public class ResetInstanceTest {
 
     @Test
     public void testResetInstanceWhenNull() {
-        // Test case: resetInstance() should handle null instance gracefully
+        // resetInstance() should handle null instance gracefully
         DataProcessor.resetInstance(); // Ensure it's null
         DataProcessor.resetInstance(); // Call again when null
         assertNull(DataProcessor.getInstance());
@@ -23,7 +19,7 @@ public class ResetInstanceTest {
 
     @Test
     public void testResetInstanceWhenNotNull() {
-        // Test case: resetInstance() should clear caches and set instance to null
+        // resetInstance() should clear caches and set instance to null
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));

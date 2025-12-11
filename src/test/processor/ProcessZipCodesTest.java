@@ -8,15 +8,11 @@ import common.ParkingViolation;
 import common.Property;
 import java.util.function.Function;
 
-/**
- * Test class for DataProcessor.processZipCodes() method.
- * One test method per test case to achieve 100% statement coverage.
- */
 public class ProcessZipCodesTest {
 
     @Test
     public void testProcessZipCodesWithSingleZipCode() {
-        // Test case: Single ZIP code
+        // Single ZIP code
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));
@@ -35,7 +31,7 @@ public class ProcessZipCodesTest {
 
     @Test
     public void testProcessZipCodesWithMultipleZipCodes() {
-        // Test case: Multiple ZIP codes
+        // Multiple ZIP codes
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));
@@ -55,7 +51,7 @@ public class ProcessZipCodesTest {
 
     @Test
     public void testProcessZipCodesWithNullZipCode() {
-        // Test case: Null ZIP code should be skipped
+        // Null ZIP code should be skipped
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));
@@ -75,7 +71,7 @@ public class ProcessZipCodesTest {
 
     @Test
     public void testProcessZipCodesWithLongZipCode() {
-        // Test case: ZIP code longer than 5 digits should be normalized
+        // ZIP code longer than 5 digits should be normalized
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));
@@ -94,7 +90,7 @@ public class ProcessZipCodesTest {
 
     @Test
     public void testProcessZipCodesWithShortZipCode() {
-        // Test case: ZIP code shorter than 5 digits should be used as-is
+        // ZIP code shorter than 5 digits should be used as-is
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("191", 100000.0, 1000.0));
@@ -113,7 +109,7 @@ public class ProcessZipCodesTest {
 
     @Test
     public void testProcessZipCodesWithEmptyArray() {
-        // Test case: Empty array should return empty map
+        // Empty array should return empty map
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         Map<String, Integer> population = new HashMap<>();
@@ -129,7 +125,7 @@ public class ProcessZipCodesTest {
 
     @Test
     public void testProcessZipCodesPreservesOrder() {
-        // Test case: Results should preserve insertion order (LinkedHashMap)
+        // Results should preserve insertion order (LinkedHashMap)
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         properties.add(new Property("19103", 100000.0, 1000.0));
