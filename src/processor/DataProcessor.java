@@ -117,7 +117,7 @@ public class DataProcessor {
                         && zipCode.equals(property.getZipCode()) 
                         && property.hasValidMarketValue()) 
                 .mapToDouble(Property::getMarketValue) 
-                .average();
+                .average(); // Java Features: Streams and Lambda
 
         return average.isPresent() ? (int) Math.round(average.getAsDouble()) : 0;
     }
@@ -181,14 +181,14 @@ public class DataProcessor {
         return df.format(value);
     }
 
-    // Using Generics and Varargs features to process multiple ZIP code inputs
+    // Helper: handles multiple ZIP codes input
     public Map<String, Integer> processZipCodes(java.util.function.Function<String, Integer> calculator,
-                                                 String... zipCodes) {
-        // preserves insertion order
+                                                 String... zipCodes) { // Java Features: Generics and Varargs 
+        // Preserves insertion order of inputs
         Map<String, Integer> results = new LinkedHashMap<>();
         for (String zipCode : zipCodes) {
             if (zipCode != null) {
-                // Normalize ZIP code to first 5 digits
+                // Formats ZIP code to first 5 digits
                 String normalizedZip = zipCode.length() >= 5 ? zipCode.substring(0, 5) : zipCode;
                 int result = calculator.apply(normalizedZip);
                 results.put(normalizedZip, result);
