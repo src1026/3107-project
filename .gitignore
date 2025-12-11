@@ -1,14 +1,5 @@
 *.class
-*.jar
-*.log
 .DS_Store
-*.csv
-*.json
-*.txt
 bin/
 out/
 build/
-
-
-
-.idea/libraries/
