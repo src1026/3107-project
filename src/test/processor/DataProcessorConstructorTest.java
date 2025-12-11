@@ -60,5 +60,29 @@ public class DataProcessorConstructorTest {
             DataProcessor.getInstance(violations, properties, null);
         });
     }
+
+    @Test
+    public void testGetInstanceWhenInstanceAlreadyExists() {
+        // Test case: getInstance() should return existing instance when called again
+        // This tests the branch: if (instance == null) - false branch
+        DataProcessor.resetInstance();
+        List<ParkingViolation> violations1 = new ArrayList<>();
+        List<Property> properties1 = new ArrayList<>();
+        Map<String, Integer> population1 = new HashMap<>();
+        
+        DataProcessor processor1 = DataProcessor.getInstance(violations1, properties1, population1);
+        
+        // Call getInstance again with different parameters
+        // Should return the same instance, not create a new one
+        List<ParkingViolation> violations2 = new ArrayList<>();
+        List<Property> properties2 = new ArrayList<>();
+        Map<String, Integer> population2 = new HashMap<>();
+        population2.put("19103", 1000);
+        
+        DataProcessor processor2 = DataProcessor.getInstance(violations2, properties2, population2);
+        
+        // Should be the same instance (singleton pattern)
+        assertSame(processor1, processor2);
+    }
 }
 
