@@ -1,7 +1,7 @@
 package test.processor;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import java.util.*;
 import processor.DataProcessor;
 import common.ParkingViolation;
@@ -22,7 +22,8 @@ public class GetAverageMarketValueTest {
         
         Map<String, Integer> population = new HashMap<>();
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getAverageMarketValue("19103");
         
         assertEquals(100000, result);
@@ -39,7 +40,8 @@ public class GetAverageMarketValueTest {
         
         Map<String, Integer> population = new HashMap<>();
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getAverageMarketValue("19103");
         
         assertEquals(200000, result);
@@ -54,7 +56,8 @@ public class GetAverageMarketValueTest {
         
         Map<String, Integer> population = new HashMap<>();
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getAverageMarketValue("19103");
         
         assertEquals(0, result);
@@ -72,7 +75,8 @@ public class GetAverageMarketValueTest {
         
         Map<String, Integer> population = new HashMap<>();
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getAverageMarketValue("19103");
         
         assertEquals(100000, result);
@@ -88,7 +92,8 @@ public class GetAverageMarketValueTest {
         
         Map<String, Integer> population = new HashMap<>();
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getAverageMarketValue("19103");
         
         assertEquals(100001, result);
@@ -104,21 +109,25 @@ public class GetAverageMarketValueTest {
         
         Map<String, Integer> population = new HashMap<>();
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getAverageMarketValue("19103");
         
         assertEquals(100000, result);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetAverageMarketValueWithNullZipCode() {
         // Test case: Null ZIP code should throw exception
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         Map<String, Integer> population = new HashMap<>();
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
-        processor.getAverageMarketValue(null);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
+        assertThrows(IllegalArgumentException.class, () -> {
+            processor.getAverageMarketValue(null);
+        });
     }
 }
 

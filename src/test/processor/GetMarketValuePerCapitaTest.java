@@ -1,7 +1,7 @@
 package test.processor;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import java.util.*;
 import processor.DataProcessor;
 import common.ParkingViolation;
@@ -24,7 +24,8 @@ public class GetMarketValuePerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 2);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getMarketValuePerCapita("19103");
         
         assertEquals(150000, result);
@@ -40,7 +41,8 @@ public class GetMarketValuePerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getMarketValuePerCapita("19103");
         
         assertEquals(0, result);
@@ -56,7 +58,8 @@ public class GetMarketValuePerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19104", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getMarketValuePerCapita("19103");
         
         assertEquals(0, result);
@@ -72,7 +75,8 @@ public class GetMarketValuePerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 0);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getMarketValuePerCapita("19103");
         
         assertEquals(0, result);
@@ -89,7 +93,8 @@ public class GetMarketValuePerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getMarketValuePerCapita("19103");
         
         assertEquals(0, result);
@@ -108,7 +113,8 @@ public class GetMarketValuePerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getMarketValuePerCapita("19103");
         
         assertEquals(300000, result);
@@ -125,7 +131,8 @@ public class GetMarketValuePerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 3);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getMarketValuePerCapita("19103");
         
         assertEquals(66667, result);
@@ -142,21 +149,25 @@ public class GetMarketValuePerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         int result = processor.getMarketValuePerCapita("19103");
         
         assertEquals(100000, result);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetMarketValuePerCapitaWithNullZipCode() {
         // Test case: Null ZIP code should throw exception
         List<ParkingViolation> violations = new ArrayList<>();
         List<Property> properties = new ArrayList<>();
         Map<String, Integer> population = new HashMap<>();
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
-        processor.getMarketValuePerCapita(null);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
+        assertThrows(IllegalArgumentException.class, () -> {
+            processor.getMarketValuePerCapita(null);
+        });
     }
 }
 

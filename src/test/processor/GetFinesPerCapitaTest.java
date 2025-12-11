@@ -1,7 +1,7 @@
 package test.processor;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import java.util.*;
 import processor.DataProcessor;
 import common.ParkingViolation;
@@ -26,7 +26,8 @@ public class GetFinesPerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         Map<String, Double> result = processor.getFinesPerCapita();
         
         assertEquals(1, result.size());
@@ -44,7 +45,8 @@ public class GetFinesPerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         Map<String, Double> result = processor.getFinesPerCapita();
         
         assertEquals(0, result.size());
@@ -61,7 +63,8 @@ public class GetFinesPerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         Map<String, Double> result = processor.getFinesPerCapita();
         
         assertEquals(0, result.size());
@@ -78,7 +81,8 @@ public class GetFinesPerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 0);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         Map<String, Double> result = processor.getFinesPerCapita();
         
         assertEquals(0, result.size());
@@ -95,7 +99,8 @@ public class GetFinesPerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19104", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         Map<String, Double> result = processor.getFinesPerCapita();
         
         assertEquals(0, result.size());
@@ -112,7 +117,8 @@ public class GetFinesPerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         Map<String, Double> result = processor.getFinesPerCapita();
         
         assertEquals(0, result.size());
@@ -132,7 +138,8 @@ public class GetFinesPerCapitaTest {
         population.put("19103", 1000);
         population.put("19104", 2000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         Map<String, Double> result = processor.getFinesPerCapita();
         
         assertEquals(2, result.size());
@@ -154,7 +161,8 @@ public class GetFinesPerCapitaTest {
         Map<String, Integer> population = new HashMap<>();
         population.put("19103", 1000);
         
-        DataProcessor processor = new DataProcessor(violations, properties, population);
+        DataProcessor.resetInstance();
+        DataProcessor processor = DataProcessor.getInstance(violations, properties, population);
         Map<String, Double> result = processor.getFinesPerCapita();
         
         assertEquals(1, result.size());
