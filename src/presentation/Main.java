@@ -10,14 +10,10 @@ import common.Property;
 import processor.DataProcessor;
 
 public class Main {
-    // TODO: add static fields for:
-    // - processor (DataProcessor)
-    // - scanner (Scanner)
     private static DataProcessor processor;
     private static Scanner scanner;
 
     public static void main(String[] args) {
-        // TODO: validate command-line arguments (must be exactly 4)
         if (args.length != 4) {
             System.err.println("Error: Incorrect number of arguments.");
             System.err.println("Usage: java Main <csv|json> <parking_file> <properties_file> <population_file>");
@@ -29,19 +25,11 @@ public class Main {
         String propertiesFile = args[2];
         String populationFile = args[3];
 
-        // TODO: check if first argument is "csv" or "json" (case-sensitive)
         if (!format.equals("csv") && !format.equals("json")) {
             System.err.println("Error: First argument must be either 'csv' or 'json' (case-sensitive).");
             System.exit(1);
         }
 
-        // TODO: read parking violations file (CSV or JSON based on first argument)
-        // TODO: read properties file
-        // TODO: read population file
-        // TODO: create DataProcessor instance
-        // TODO: initialize Scanner for user input
-        // TODO: call showMainMenu()
-        // TODO: handle FileNotFoundException and IOException with error messages
         try {
             List<ParkingViolation> violations;
             if (format.equals("csv")) {
@@ -71,12 +59,6 @@ public class Main {
     }
 
     private static void showMainMenu() {
-        // TODO: loop until user exits
-        // TODO: display menu options (1-5, 0 to exit)
-        // TODO: read user input
-        // TODO: parse integer choice
-        // TODO: call handleMenuChoice() with the choice
-        // TODO: ignore invalid input (non-integer) and show menu again
         while (true) {
             System.out.println("\nMain Menu:");
             System.out.println("1. Total population for all ZIP codes");
@@ -104,9 +86,6 @@ public class Main {
     }
 
     private static void handleMenuChoice(int choice) {
-        // TODO: use switch statement to handle choices 0-5
-        // TODO: call appropriate handler method for each option
-        // TODO: option 0 should exit the program
         switch (choice) {
             case 1:
                 handleTotalPopulation();
@@ -133,20 +112,14 @@ public class Main {
         }
     }
 
-    /**
-     * Menu Option #1: Total population for all ZIP codes.
-     */
+    
+    // Menu Option #1: Total population for all ZIP codes
     private static void handleTotalPopulation() {
-        // menu option 1
-        // TODO: Get total population from processor
-        // TODO: Display the result
         int total = processor.getTotalPopulation();
         System.out.println("\nTotal population for all ZIP codes: " + total);
     }
 
-    /**
-     * Menu Option #2: Handle fines per capita for each ZIP code.
-     */
+    // Menu Option #2: Handle fines per capita for each ZIP code
     private static void handleFinesPerCapita() {
         Map<String, Double> finesPerCapita = processor.getFinesPerCapita();
         System.out.println();
@@ -155,11 +128,27 @@ public class Main {
         }
     }
 
-    /**
-     * Helper for menu options 3-5: Display results for multiple ZIP codes.
-     */
+    // Menu Option #3: Handle average market value for a ZIP code
+    private static void handleAverageMarketValue() {
+        displayZipCodes(zipCode -> processor.getAverageMarketValue(zipCode), 
+                                  "Average residential market value");
+    }
+
+    // Menu Option #4: Handle average total livable area for a ZIP code
+    private static void handleAverageTotalLivableArea() {
+        displayZipCodes(zipCode -> processor.getAverageTotalLivableArea(zipCode), 
+                                  "Average residential total livable area");
+    }
+
+    // Menu Option #5: Handle market value per capita for a ZIP code
+    private static void handleMarketValuePerCapita() {
+        displayZipCodes(zipCode -> processor.getMarketValuePerCapita(zipCode), 
+                                  "Residential market value per capita");
+    }
+
+    // Helper: Displays results for multiple ZIP codes in Options #3-5
     private static void displayZipCodes(java.util.function.Function<String, Integer> calculator,
-                                       String resultLabel) {
+        String resultLabel) {
         System.out.print("Enter ZIP codes separated by commas (e.g., 19103,19104): ");
         String input = scanner.nextLine().trim();
         String[] zipCodeArray = input.split(",");
@@ -167,7 +156,7 @@ public class Main {
             zipCodeArray[i] = zipCodeArray[i].trim();
         }
         try {
-            // normalizes zip code formats
+            // Handles multiple ZIP codes input using processZipCodes from DataProcessor
             Map<String, Integer> results = processor.processZipCodes(calculator, zipCodeArray);
             System.out.println();
             for (Map.Entry<String, Integer> entry : results.entrySet()) {
@@ -176,30 +165,6 @@ public class Main {
         } catch (IllegalArgumentException e) {
             System.out.println("\nError: " + e.getMessage());
         }
-    }
-
-    /**
-     * Menu Option #3: Handle average market value for a ZIP code.
-     */
-    private static void handleAverageMarketValue() {
-        displayZipCodes(zipCode -> processor.getAverageMarketValue(zipCode), 
-                                  "Average residential market value");
-    }
-
-    /**
-     * Menu Option #4: Handle average total livable area for a ZIP code.
-     */
-    private static void handleAverageTotalLivableArea() {
-        displayZipCodes(zipCode -> processor.getAverageTotalLivableArea(zipCode), 
-                                  "Average residential total livable area");
-    }
-
-    /**
-     * Menu Option #5: Handle market value per capita for a ZIP code.
-     */
-    private static void handleMarketValuePerCapita() {
-        displayZipCodes(zipCode -> processor.getMarketValuePerCapita(zipCode), 
-                                  "Residential market value per capita");
     }
 }
 
