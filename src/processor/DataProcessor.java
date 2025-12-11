@@ -1,10 +1,10 @@
 package processor;
 
 import java.util.*;
+import java.util.function.Function;
 import java.text.DecimalFormat;
 import common.ParkingViolation;
 import common.Property;
-import java.util.function.Function;
 
 public class DataProcessor {
     // Singleton instance

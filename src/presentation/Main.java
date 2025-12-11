@@ -2,6 +2,7 @@ package presentation;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Function;
 import datamanagement.ParkingViolationReader;
 import datamanagement.PropertyReader;
 import datamanagement.PopulationReader;
@@ -147,7 +148,7 @@ public class Main {
     }
 
     // Helper: Displays results for multiple ZIP codes in Options #3-5
-    private static void displayZipCodes(java.util.function.Function<String, Integer> calculator,
+    private static void displayZipCodes(Function<String, Integer> calculator,
         String resultLabel) {
         System.out.print("Enter ZIP codes separated by commas (e.g., 19103,19104): ");
         String input = scanner.nextLine().trim();
