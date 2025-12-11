@@ -18,6 +18,10 @@ public class DataProcessor {
     private List<Property> properties;
     private Map<String, Integer> population;
 
+    private Map<String, Integer> averageMarketValueCache;
+
+    private Map<String, Integer> averageTotalLivableAreaCache;
+
     // Private constructor for Singleton pattern
     private DataProcessor(List<ParkingViolation> violations, 
                         List<Property> properties, 
@@ -35,6 +39,8 @@ public class DataProcessor {
         this.violations = new ViolationList(violations);
         this.properties = properties;
         this.population = population;
+        this.averageMarketValueCache = new HashMap<>();
+        this.averageTotalLivableAreaCache = new HashMap<>();
     }
 
     /**
@@ -61,6 +67,19 @@ public class DataProcessor {
      */
     public static DataProcessor getInstance() {
         return instance;
+    }
+
+    /**
+     * Resets the singleton instance to null.
+     * This method is primarily for testing purposes to allow creating new instances.
+     * Also clears all memoization caches.
+     */
+    public static void resetInstance() {
+        if (instance != null) {
+            instance.averageMarketValueCache.clear();
+            instance.averageTotalLivableAreaCache.clear();
+        }
+        instance = null;
     }
 
     public int getTotalPopulation() {
@@ -103,15 +122,25 @@ public class DataProcessor {
         return finesPerCapita;
     }
 
+    /**
+     * Calculates the average market value for properties in a given ZIP code.
+     * Uses memoization to cache results and avoid redundant calculations for the same ZIP code.
+     * 
+     * @param zipCode the ZIP code to calculate average market value for
+     * @return the average market value as an integer, or 0 if no valid properties found
+     * @throws IllegalArgumentException if zipCode is null
+     */
     public int getAverageMarketValue(String zipCode) {
         if (zipCode == null) {
             throw new IllegalArgumentException("ZIP code cannot be null");
         }
         
-        // TODO: sum market values for properties in the ZIP code (only valid values)
-        // TODO: count number of valid properties
-        // TODO: calculate average and round to integer
-        // TODO: return 0 if no valid properties found
+        // Memoization: Check cache first - return cached result if available
+        if (averageMarketValueCache.containsKey(zipCode)) {
+            return averageMarketValueCache.get(zipCode);
+        }
+        
+        // Calculate average market value for properties in the ZIP code (only valid values)
         // Using Streams and Lambda expressions feature
         OptionalDouble average = properties.stream()
                 .filter(property -> property != null 
@@ -120,18 +149,33 @@ public class DataProcessor {
                 .mapToDouble(Property::getMarketValue) 
                 .average(); // Java Features: Streams and Lambda
 
-        return average.isPresent() ? (int) Math.round(average.getAsDouble()) : 0;
+        int result = average.isPresent() ? (int) Math.round(average.getAsDouble()) : 0;
+        
+        // Memoization: Store computed result in cache for future use
+        averageMarketValueCache.put(zipCode, result);
+        
+        return result;
     }
 
+    /**
+     * Calculates the average total livable area for properties in a given ZIP code.
+     * Uses memoization to cache results and avoid redundant calculations for the same ZIP code.
+     * 
+     * @param zipCode the ZIP code to calculate average total livable area for
+     * @return the average total livable area as an integer, or 0 if no valid properties found
+     * @throws IllegalArgumentException if zipCode is null
+     */
     public int getAverageTotalLivableArea(String zipCode) {
         if (zipCode == null) {
             throw new IllegalArgumentException("ZIP code cannot be null");
         }
         
-        // TODO: sum total livable areas for properties in the ZIP code (only valid values)
-        // TODO: count number of valid properties
-        // TODO: calculate average and round to integer
-        // TODO: return 0 if no valid properties found
+        // Memoization: Check cache first - return cached result if available
+        if (averageTotalLivableAreaCache.containsKey(zipCode)) {
+            return averageTotalLivableAreaCache.get(zipCode);
+        }
+        
+        // Calculate average total livable area for properties in the ZIP code (only valid values)
         double sum = 0;
         int count = 0;
 
@@ -142,11 +186,10 @@ public class DataProcessor {
             }
         }
 
-        if (count == 0) {
-            return 0;
-        }
-
-        return (int) Math.round(sum / count);
+        int result = (count == 0) ? 0 : (int) Math.round(sum / count);
+        averageTotalLivableAreaCache.put(zipCode, result);
+        
+        return result;
     }
 
     public int getMarketValuePerCapita(String zipCode) {
